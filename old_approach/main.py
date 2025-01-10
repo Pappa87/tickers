@@ -1,4 +1,3 @@
-import main_page_scraper
 import article_scraper
 import asyncio
 from pyppeteer import launch
