@@ -6,6 +6,7 @@ import config
 import time
 import schedule
 
+
 def download(subreddit):
     today_string = datetime.today().strftime('%Y_%m_%d__%H_%M_%S')
 
@@ -48,10 +49,9 @@ def job_to_run():
     download("wallstreetbets")
 
 
-# schedule.every(10).minutes.do(job_to_run)
-# def run_scheduled_jobs():
-#     while True:
-#         schedule.run_pending()  # Run any pending scheduled jobs
-#         time.sleep(1)
+# Schedule the task
+schedule.every(5).minutes.do(job_to_run)
 
-job_to_run()
+while True:
+    schedule.run_pending()
+    time.sleep(1)
