@@ -42,12 +42,12 @@ def create_file_name(article_id, time_stamp):
 
     check_and_create_todays_directory(time_stamp)
 
-    file_name = f"""{config.SAVING_FOLDER}\\{time_stamp}\\{article_id.replace("/", "__")}__{time_stamp}.json"""
+    file_name = f"""{config.SAVING_FOLDER}/{time_stamp}/{article_id.replace("/", "__")}__{time_stamp}.json"""
     return file_name
 
 
 def check_and_create_todays_directory(today_string):
-    directory_path = f"{config.SAVING_FOLDER}\\{today_string}"
+    directory_path = f"{config.SAVING_FOLDER}/{today_string}"
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
 
