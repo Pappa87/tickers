@@ -52,7 +52,7 @@ print("reddit scraper started: \n")
 # make it run without scheduling first:)
 job_to_run()
 # Schedule the task
-schedule.every(1).minutes.do(job_to_run)
+schedule.every(5).minutes.do(job_to_run)
 while True:
     schedule.run_pending()
     time.sleep(1)
