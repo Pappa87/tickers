@@ -1,8 +1,20 @@
 import json
 import requests
 
+class Stock:
+
+    def __init__(self, name, symbol):
+        self.name = name
+        self.symbol = symbol
+
+    def __str__(self):
+        return f"Stock: ({self.name}: {self.symbol})"
+
+    def __repr__(self):
+        return self.__str__()
+
 def get_tickers():
-    url = "https://financialmodelingprep.com/api/v3/stock/list"
+    url = "https://financialmodelingprep.com/stable/sp500-constituent"
     api_keys = json.load(open("C:\\tmp\\ticker_test_data\\api_keys.json", "r"))
     financialmodelingprep_api_key = api_keys["financialmodelingprep"]
 
@@ -13,14 +25,7 @@ def get_tickers():
         print("Number of stocks:", len(stocks))
         ticker_list = []
         for stock in stocks:
-            if (
-                    ("." not in stock["symbol"])
-                        &
-                    (len(stock["symbol"]) > 2)
-                        &
-                    (stock["exchange"] == "NASDAQ")
-            ):
-                ticker_list.append(stock["symbol"])
+            ticker_list.append(Stock(stock["name"], stock["symbol"]))
         return ticker_list
 
 
