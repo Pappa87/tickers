@@ -1,6 +1,9 @@
 import json
 import requests
 
+import config
+
+
 class Stock:
 
     def __init__(self, name, symbol):
@@ -15,8 +18,7 @@ class Stock:
 
 def get_tickers():
     url = "https://financialmodelingprep.com/stable/sp500-constituent"
-    api_keys = json.load(open("C:\\tmp\\ticker_test_data\\api_keys.json", "r"))
-    financialmodelingprep_api_key = api_keys["financialmodelingprep"]
+    financialmodelingprep_api_key = config.TICKER_API_KEY
 
     response = requests.get(f"{url}?apikey={financialmodelingprep_api_key}")
 
