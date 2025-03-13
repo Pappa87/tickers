@@ -72,8 +72,8 @@ def searching_for_company_names(json_manager):
 
     logger.info("searching texts for company names")
     for forum_id in forum_ids:
-        # logger.info(f"start to search for company names in {current_state}/{len(forum_ids)}")
-        # current_state += 1
+        logger.info(f"start to search for company names in {current_state}/{len(forum_ids)}")
+        current_state += 1
 
         forum_occurrence = json_manager.get_forum_occurrence(forum_id)
 
