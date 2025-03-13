@@ -2,10 +2,10 @@ import logging
 import time
 
 import requests
-from article import Article, Comment
+from json_parse_approach.article import Article, Comment
 import config
 import os
-from common import logger
+from json_parse_approach.common import logger
 
 def parse_article(article_identifier, time_stamp):
     time.sleep(config.WAIT)

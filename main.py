@@ -1,7 +1,7 @@
 from datetime import datetime
-from common import logger
-from article_list_parser import parse_article_list
-from article_parser import parse_article
+from json_parse_approach.common import logger
+from json_parse_approach.article_list_parser import parse_article_list
+from json_parse_approach.article_parser import parse_article
 import config
 import time
 import schedule
