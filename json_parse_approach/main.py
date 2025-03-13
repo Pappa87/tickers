@@ -5,6 +5,7 @@ from article_parser import parse_article
 import config
 import time
 import schedule
+import request_ticker_counter.ticker_counter_executer
 
 
 def download(subreddit):
@@ -46,6 +47,7 @@ def try_to_run_parser(link, today_string):
 
 
 def job_to_run():
+    request_ticker_counter.ticker_counter_executer.main()
     download("wallstreetbets")
 
 print("reddit scraper started: \n")

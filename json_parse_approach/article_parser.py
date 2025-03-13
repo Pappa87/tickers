@@ -4,7 +4,6 @@ import time
 import requests
 from article import Article, Comment
 import config
-from datetime import datetime
 import os
 from common import logger
 

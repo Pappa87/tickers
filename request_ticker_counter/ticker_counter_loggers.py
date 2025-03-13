@@ -37,3 +37,8 @@ def get_symbol(cmpny_name, tickers):
         if ticker.name == cmpny_name:
             return ticker.symbol
     return None
+
+
+def log_final_result(result):
+    sorted_result = sorted(result.items(), key=lambda x: x[1], reverse=True)
+    logger.info(f"final_result: {sorted_result}")

@@ -10,6 +10,25 @@ class MatchReport:
         self.cmpny_name_matches = cmpny_name_matches
         self.symbol_matches = symbol_matches
 
+    def get_agg_report(self):
+        report = {}
+        report = self.add_matches_to_report(report, self.cmpny_name_matches)
+        report = self.add_matches_to_report(report, self.symbol_matches)
+        return report
+
+    @staticmethod
+    def add_matches_to_report(current_result: dict, match_dict: dict):
+        result = current_result
+        expressions = match_dict.keys()
+
+        for expression in expressions:
+            if expression not in result.keys():
+                result[expression] = match_dict[expression]
+            else:
+                result[expression] = result[expression] + match_dict[expression]
+
+        return result
+
 
 def search_for_expression(searchable_text, expression):
     pattern = rf"(?:^|\W){re.escape(expression)}(?:\W|$)"
