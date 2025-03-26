@@ -54,30 +54,45 @@ class Strategy:
         else:
             self.get_portfolio(date_time).add_symbol(symbol, volume)
 
-
     def get_analyzed_days(self):
-        strategy_days = set(self.portfolios.keys())
-        market_days = set(self.historical_stock_manager.get_market_days())
-        analyzed_days = list(strategy_days.intersection(market_days))
+        strategy_days_set = set(self.portfolios.keys())
+
+        market_days = self.historical_stock_manager.get_market_days()
+        market_days_set = set(market_days)
+
+        analyzed_days = list(strategy_days_set.intersection(market_days_set))
         analyzed_days.sort()
+
+        last_day_of_strategy = analyzed_days[-1]
+        next_day_of_market = market_days[market_days.index(last_day_of_strategy) + 1]
+        analyzed_days.append(next_day_of_market)
+
         return analyzed_days
 
-    def homo_growth(self):
+    def norm_growth(self):
         analyzed_days = self.get_analyzed_days()
-        for days in range(0, len(analyzed_days)):
-            self.homo_growth_of_date(be)
-        return
 
-    def homo_growth_of_date(self, begin, end):
-        portfolio = self.get_portfolio(begin)
-        total_value_of_investment = portfolio.get_total_value()
-
+        day_indexes = range(0, len(analyzed_days) -1)
         total_growth = 1
+        for day_index in day_indexes:
+            day = analyzed_days[day_index]
+            following_market_day = analyzed_days[day_index + 1]
+            norm_growth_of_date = self.get_norm_growth_of_date(day, following_market_day)
+            total_growth *= norm_growth_of_date
+        return total_growth
+
+    def get_norm_growth_of_date(self, begin, end):
+        portfolio = self.get_portfolio(begin)
+
+        total_growth = 0
         for investment in portfolio.investments:
             growth = self.historical_stock_manager.get_growth_of_symbol(investment.symbol, begin, end)
-            homo_growth = (investment.volume / total_value_of_investment) * growth
-            total_growth = total_growth * homo_growth
-        return total_growth
+            growth_of_company = (investment.volume) * growth
+            total_growth = total_growth + growth_of_company
+
+        total_value_of_investment = portfolio.get_total_value()
+        normalized_growth = total_growth /total_value_of_investment
+        return normalized_growth
 
 
     def __repr__(self):
@@ -89,24 +104,20 @@ class Strategy:
 
 # main.py
 def main():
-#     day_1 = datetime.date(2025, 3, 11)
-#     day_2 = datetime.date(2025, 3, 12)
-#     day_3 = datetime.date(2025, 3, 13)
-#
-#     strategy = Strategy()
-#     strategy.add_investment(day_1, "AAPL", 10)
-#     strategy.add_investment(day_2, "AAPL", 5)
-#     strategy.add_investment(day_3, "AAPL", 8)
-#
-#     strategy.add_investment(day_1, "TSLA", 4)
-#     strategy.add_investment(day_2, "TSLA", 5)
-#     strategy.add_investment(day_3, "TSLA", 6)
-#     strategy.homo_growth()
+    day_1 = datetime.date(2025, 3, 11)
+    day_2 = datetime.date(2025, 3, 12)
+    day_3 = datetime.date(2025, 3, 13)
 
     strategy = Strategy()
-    for i in range(1, 29):
-        strategy.add_investment(datetime.date(2025, 2, i), "AAPL", 10)
-    strategy.homo_growth()
+    strategy.add_investment(day_1, "AAPL", 10)
+    strategy.add_investment(day_2, "AAPL", 5)
+    strategy.add_investment(day_3, "AAPL", 8)
+
+    strategy.add_investment(day_1, "TSLA", 4)
+    strategy.add_investment(day_2, "TSLA", 5)
+    strategy.add_investment(day_3, "TSLA", 6)
+    norm_growth = strategy.norm_growth()
+
     return
 
 if __name__ == "__main__":
