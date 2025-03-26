@@ -54,7 +54,7 @@ def get_company_data_of_page(page_index):
 
 
 def collect_company_data() -> List[CompanyData]:
-    NUMBER_OF_PAGES = 3
+    NUMBER_OF_PAGES = 2
     indexes = range(1, NUMBER_OF_PAGES + 1)
     company_data = []
     for index in indexes:
@@ -70,14 +70,27 @@ def create_csv_of_company_datas(company_datas: List[CompanyData]):
         csv_test += company_data.make_it_csv_line_without_expr()
     return csv_test
 
-    import google.generativeai as genai
+
+import google.generativeai as genai
+
 
 def main():
-    genai.configure(api_key=config.GEMINI_API_KEY)
+    company_datas = collect_company_data()
 
-    model = genai.GenerativeModel('gemini-pro')
-    response = model.generate_content("Explain quantum computing in simple terms.")
-    print(response.text)
+    genai.configure(api_key=config.GEMINI_API_KEY)
+    model = genai.GenerativeModel('gemini-1.5-pro')
+    for company_data in company_datas:
+        company_name = company_data.company_name
+        print(f"company_name: {company_name}")
+
+        question = (f"I want to search for the following company: {company_name}, in a reddit forum, can you give me alternatives, that can refer to it by reddit users.\n"
+                    f"if you cant come up any good alternative answer None.\n"
+                    f"Use the following format in the response: [alternative1, alternative2....]. No other text required.")
+        response = model.generate_content(question)
+        print(question)
+        print("alternatives: ")
+        print(response.text)
+        time.sleep(10)
 
 if __name__ == "__main__":
     main()
